@@ -14,5 +14,5 @@ spring:
     jdbc:
       initialize-schema: never
     job:
-      enable: false
+      enabled: false
 
