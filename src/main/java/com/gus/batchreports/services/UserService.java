@@ -5,10 +5,13 @@ import com.gus.batchreports.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +25,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void getReport() throws Exception {
-        customJobLauncher.run(job, new JobParameters());
+    public void getReport(String requestUser) throws Exception {
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addString("jobUUID", UUID.randomUUID().toString())
+                .addString("dataExecucao", OffsetDateTime.now().toString())
+                .addString("requestUser", requestUser)
+                .toJobParameters();
+        customJobLauncher.run(job, jobParameters);
     }
 }
